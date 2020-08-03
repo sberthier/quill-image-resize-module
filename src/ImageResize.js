@@ -103,7 +103,7 @@ export default class ImageResize {
 		}
 	};
 
-	handleScroll = (evt) => {
+	handleScroll = () => {
 		//Hide the overlay when the editor is scrolled,
 		//otherwise image is no longer correctly aligned with overlay
 		this.hide();

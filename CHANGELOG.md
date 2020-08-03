@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.0 - August 3, 2020
+
+- Position image using [Parchment](https://github.com/quilljs/parchment) align methods
+
 ## v3.0.0 - April 9, 2017
 
 - Position drag handles relative to editor, not document
