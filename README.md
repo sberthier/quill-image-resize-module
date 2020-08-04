@@ -16,7 +16,7 @@ In [APOIA.se](https://apoia.se) we needed to use both [quill-image-resize-module
 
 ```javascript
 import Quill from 'quill';
-import { ImageResize } from 'quill-image-resize-module';
+import { ImageResize } from '@apoiase/quill-image-resize-module';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -167,7 +167,7 @@ the module setup.
 For example,
 
 ```javascript
-import { Resize, BaseModule } from 'quill-image-resize-module';
+import { Resize, BaseModule } from '@apoiase/quill-image-resize-module';
 
 class MyModule extends BaseModule {
     // See src/modules/BaseModule.js for documentation on the various lifecycle callbacks
