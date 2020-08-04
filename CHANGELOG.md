@@ -2,7 +2,9 @@
 
 ## v4.0.1 - August 4, 2020
 
-- Fix alignment status of toolbar buttons when image is aligned with Quill's toolbar
+- Fix the following bugs when image is aligned with Quill's toolbar:
+  - Alignment status of toolbar buttons
+  - Position of dashed overlay
 
 ## v4.0.0 - August 3, 2020
 
