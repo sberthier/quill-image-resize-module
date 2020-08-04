@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.1 - August 4, 2020
+
+- Fix alignment status of toolbar buttons when image is aligned with Quill's toolbar
+
 ## v4.0.0 - August 3, 2020
 
 - Position image using [Parchment](https://github.com/quilljs/parchment) align methods

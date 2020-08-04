@@ -40,6 +40,7 @@ export default class ImageResize {
 		this.quill.root.addEventListener('click', this.handleClick, false);
 		this.quill.root.addEventListener('mscontrolselect', this.handleClick, false); //IE 11 support
 		this.quill.root.addEventListener('scroll', this.handleScroll, false);
+		this.quill.on('text-change', this.onUpdate);
 
 		this.quill.root.parentNode.style.position = this.quill.root.parentNode.style.position || 'relative';
 
