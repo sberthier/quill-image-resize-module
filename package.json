@@ -1,5 +1,5 @@
 {
-  "name": "@apoiase/quill-image-resize",
+  "name": "quill-image-resize-module",
   "version": "4.0.1",
   "description": "A module for Quill rich text editor to allow images to be resized.",
   "main": "image-resize.min.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Etoile984816138/quill-image-resize-module.git"
+    "url": "git+https://github.com/sberthier/quill-image-resize-module"
   },
   "keywords": [
     "quill",
@@ -34,9 +34,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/apoiase/quill-image-resize-module/issues"
+    "url": "https://github.com/sberthier/quill-image-resize-module/issues"
   },
-  "homepage": "https://github.com/apoiase/quill-image-resize-module#readme",
+  "homepage": "https://github.com/sberthier/quill-image-resize-module#readme",
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.1",

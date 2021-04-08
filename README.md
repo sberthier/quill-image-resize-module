@@ -4,6 +4,10 @@ A module for Quill rich text editor to allow images to be resized.
 
 ## Fork reasons
 
+Introduce scale property
+
+### From Apoia
+
 In [APOIA.se](https://apoia.se) we needed to use both [quill-image-resize-module](https://github.com/Etoile984816138/quill-image-resize-module) and [quill-delta-to-html](https://github.com/nozer/quill-delta-to-html). The image resize module used the style attribute to align elements with the alignment toolbar, but the delta to html doesn't know how to parse that unless we align the line containing the image using Quill's [Parchment](https://github.com/quilljs/parchment).
 
 ## Demo
@@ -16,7 +20,7 @@ In [APOIA.se](https://apoia.se) we needed to use both [quill-image-resize-module
 
 ```javascript
 import Quill from 'quill';
-import { ImageResize } from '@apoiase/quill-image-resize-module';
+import { ImageResize } from 'quill-image-resize-module';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -167,7 +171,7 @@ the module setup.
 For example,
 
 ```javascript
-import { Resize, BaseModule } from '@apoiase/quill-image-resize-module';
+import { Resize, BaseModule } from 'quill-image-resize-module';
 
 class MyModule extends BaseModule {
     // See src/modules/BaseModule.js for documentation on the various lifecycle callbacks
