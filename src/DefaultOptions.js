@@ -4,6 +4,7 @@ export default {
         'Toolbar',
         'Resize',
     ],
+	scale: 1,
     overlayStyles: {
         position: 'absolute',
         boxSizing: 'border-box',

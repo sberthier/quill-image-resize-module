@@ -82,7 +82,7 @@ export class Resize extends BaseModule {
             return;
         }
         // update image size
-        const deltaX = evt.clientX - this.dragStartX;
+        const deltaX = (evt.clientX - this.dragStartX) * this.options.scale;
         if (this.dragBox === this.boxes[0] || this.dragBox === this.boxes[3]) {
             // left-side resize handler; dragging right shrinks image
             this.img.width = Math.round(this.preDragWidth - deltaX);
