@@ -163,18 +163,16 @@ export default class ImageResize {
 		if (!this.overlay || !this.img) {
 			return;
 		}
-		const scale = this.options.scale;
-
-		// position the overlay over the image
-		const parent = this.quill.root.parentNode;
-		const imgRect = this.img.getBoundingClientRect();
-		const containerRect = parent.getBoundingClientRect();
+		const left = this.img.offsetLeft
+		const top = this.img.offsetTop
+		const width = this.img.offsetWidth
+		const height = this.img.offsetHeight
 
 		Object.assign(this.overlay.style, {
-			left: `${(imgRect.left - containerRect.left - 1 + parent.scrollLeft) * scale}px`,
-			top: `${(imgRect.top - containerRect.top + parent.scrollTop) * scale}px`,
-			width: `${imgRect.width * scale}px`,
-			height: `${imgRect.height * scale}px`,
+			left: `${left}px`,
+			top: `${top}px`,
+			width: `${width}px`,
+			height: `${height}px`,
 		});
 	};
 
