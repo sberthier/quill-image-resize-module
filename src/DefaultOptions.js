@@ -5,6 +5,7 @@ export default {
         'Resize',
     ],
 	scale: 1,
+	rotation: 0,
     overlayStyles: {
         position: 'absolute',
         boxSizing: 'border-box',

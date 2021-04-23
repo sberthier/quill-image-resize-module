@@ -4,6 +4,8 @@ import DefaultOptions from './DefaultOptions';
 import { DisplaySize } from './modules/DisplaySize';
 import { Toolbar } from './modules/Toolbar';
 import { Resize } from './modules/Resize';
+import { Matrix } from './Matrix'
+
 
 const knownModules = { DisplaySize, Toolbar, Resize };
 
@@ -164,18 +166,135 @@ export default class ImageResize {
 			return;
 		}
 		const scale = this.options.scale;
+		const rotation = this.options.rotation;
 
 		// position the overlay over the image
 		const parent = this.quill.root.parentNode;
 		const imgRect = this.img.getBoundingClientRect();
 		const containerRect = parent.getBoundingClientRect();
 
+		function degrees_to_radians(degrees)
+		{
+			const pi = Math.PI;
+			return degrees * (pi/180);
+		}
+
+
+		 /*
+		 * Calculates the angle ABC (in radians)
+		 *
+		 * A first point, ex: {x: 0, y: 0}
+		 * C second point
+		 * B center point
+		 */
+		function find_angle(A,B,C) {
+			var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
+			var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
+			var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+			return Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
+		}
+
+		console.log('rotation = ', this.options.rotation);
+		console.log('containerRect = ', containerRect);
+		console.log('imgRect = ', imgRect);
+		console.log('parent.scrollTop = ', parent.scrollTop);
+		console.log('parent.scrollLeft = ', parent.scrollLeft);
+		// const t = ;
+		const t = degrees_to_radians(rotation);
+		console.log('t = ', t);
+
+		// https://stackoverflow.com/questions/9971230/calculate-rotated-rectangle-size-from-known-bounding-box-coordinates
+		const containerWidth = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (  containerRect.width * Math.cos(t) - containerRect.height * Math.sin(t))
+		const containerHeight = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (- containerRect.width * Math.sin(t) + containerRect.height * Math.cos(t))
+		const imgWidth = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (  imgRect.width * Math.cos(t) - imgRect.height * Math.sin(t))
+		const imgHeight = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (- imgRect.width * Math.sin(t) + imgRect.height * Math.cos(t))
+
+		const containerScaleWidth = containerWidth/containerRect.width;
+		const containerScaleHeight = containerHeight/containerRect.height;
+		// console.log('containerScaleWidth = ', containerScaleWidth);
+		// console.log('containerScaleHeight = ', containerScaleHeight);
+
+		const imgScaleWidth = imgWidth/imgRect.width;
+		const imgScaleHeight = imgHeight/imgRect.height;
+		// console.log('imgScaleWidth = ', imgScaleWidth);
+		// console.log('imgScaleHeight = ', imgScaleHeight);
+
+		const cx = containerHeight * Math.sin(t);
+		const cy = containerHeight * Math.cos(t);
+		const ix = imgHeight * Math.sin(t);
+		const iy = imgHeight * Math.cos(t);
+
+		console.log('containerWidth = ', containerWidth, containerHeight);
+		console.log('cx = ', cx, cy);
+		console.log('imgWidth = ', imgWidth, imgHeight);
+		console.log('ix = ', ix, iy);
+
+		const p1X = cx;
+		const p1Y = 0;
+		const p2X = imgRect.left - containerRect.left + ix;
+		const p2Y = imgRect.top - containerRect.top + 0;
+
+		console.log('p1X = ', p1X, p1Y);
+		console.log('p2X = ', p2X, p2Y);
+		const vX = (p2X - p1X);
+		const vY = (p2Y - p1Y);
+		console.log('vX = ', vX, vY);
+
+
+		const rotLeft = vX * Math.cos(-t) - vY * Math.sin(-t);
+		const rotTop = vX * Math.sin(-t) + vY * Math.cos(-t);
+		console.log('rotLeft = ', rotLeft, rotTop);
+
+		// const ncx = containerRect.left + cx;
+		// const ncy = containerRect.top + cy;
+		//
+		// const nix = imgRect.left - containerRect.left + ix;
+		// const niy = imgRect.top - containerRect.top + iy;
+		//
+		// console.log('nix = ', nix, niy);
+		//
+		// const lix = cx - nix;
+		// const liy = cy - niy;
+		//
+		// console.log('lix = ', lix, liy);
+		// console.log(imgWidth, imgHeight);
+		// console.log(imgWidth * scale, imgHeight * scale);
+		// const origLeft = imgRect.left - containerRect.left
+		// const origTop = imgRect.top - containerRect.top
+		//
+		// const a = t - find_angle({x: origLeft, y: origTop}, {x:0, y: 0}, {x:0, y: 90});
+		// console.log('a = ', a);
+		//
+		// console.log('origLeft = ', origLeft);
+		// console.log('origTop = ', origTop);
+		//
+		// const rotLeft = origLeft * Math.cos(a) - origTop * Math.sin(a);
+		// const rotTop = origLeft * Math.sin(a) + origTop * Math.cos(a);
+		//
+		// console.log('rotLeft = ', rotLeft);
+		// console.log('rotTop = ', rotTop);
+		// const matrix = new Matrix();
+		// console.log('matrix.scale(containerRect.width, containerRect.height) = ', matrix.scale(containerRect.width, containerRect.height));
+		// console.log('matrix = ', matrix
+		// 	.rotate(t)
+		// 	.scale(containerRect.width, containerRect.height)
+			// .scale(containerScaleWidth, containerScaleHeight)
+			// .applyToPoint(origLeft, origTop)
+		// );
+		// const z = matrix.scale(containerRect.width, containerRect.height).rotate(t).scale(containerScaleWidth, containerScaleHeight).applyToPoint(origLeft, origTop);
+		// console.log('z.x = ', z.x, z.y);
+
 		Object.assign(this.overlay.style, {
-			left: `${(imgRect.left - containerRect.left - 1 + parent.scrollLeft) * scale}px`,
-			top: `${(imgRect.top - containerRect.top + parent.scrollTop) * scale}px`,
-			width: `${imgRect.width * scale}px`,
-			height: `${imgRect.height * scale}px`,
+			// transform: `scale(${imgScaleWidth}, ${imgScaleHeight})`, //  translate(${rotLeft * scale}px, ${rotTop * scale}px)
+			// top: '0px',
+			// left: '0px',
+			left: `${(rotLeft - 1 + parent.scrollLeft) * scale}px`,
+			top: `${(rotTop + parent.scrollTop) * scale}px`,
+			width: `${imgWidth * scale}px`,
+			height: `${imgHeight * scale}px`,
 		});
+
+		// console.log('this.overlay.style = ', this.overlay.style);
 	};
 
 	hide = () => {
