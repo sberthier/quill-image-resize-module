@@ -203,36 +203,38 @@ export default class ImageResize {
 		const t = degrees_to_radians(rotation);
 		console.log('t = ', t);
 
-		// https://stackoverflow.com/questions/9971230/calculate-rotated-rectangle-size-from-known-bounding-box-coordinates
-		const containerWidth = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (  containerRect.width * Math.cos(t) - containerRect.height * Math.sin(t))
-		const containerHeight = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (- containerRect.width * Math.sin(t) + containerRect.height * Math.cos(t))
-		const imgWidth = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (  imgRect.width * Math.cos(t) - imgRect.height * Math.sin(t))
-		const imgHeight = (1/(Math.pow(Math.cos(t),2)-Math.pow(Math.sin(t),2))) * (- imgRect.width * Math.sin(t) + imgRect.height * Math.cos(t))
+		const tS =  rotation >= 0 ? t: -t
 
-		const containerScaleWidth = containerWidth/containerRect.width;
-		const containerScaleHeight = containerHeight/containerRect.height;
+		// https://stackoverflow.com/questions/9971230/calculate-rotated-rectangle-size-from-known-bounding-box-coordinates
+		const containerWidth = (1/(Math.pow(Math.cos(tS),2)-Math.pow(Math.sin(tS),2))) * (  containerRect.width * Math.cos(tS) - containerRect.height * Math.sin(tS))
+		const containerHeight = (1/(Math.pow(Math.cos(tS),2)-Math.pow(Math.sin(tS),2))) * (- containerRect.width * Math.sin(tS) + containerRect.height * Math.cos(tS))
+		const imgWidth = (1/(Math.pow(Math.cos(tS),2)-Math.pow(Math.sin(tS),2))) * (  imgRect.width * Math.cos(tS) - imgRect.height * Math.sin(tS))
+		const imgHeight = (1/(Math.pow(Math.cos(tS),2)-Math.pow(Math.sin(tS),2))) * (- imgRect.width * Math.sin(tS) + imgRect.height * Math.cos(tS))
+
+		// const containerScaleWidth = containerWidth/containerRect.width;
+		// const containerScaleHeight = containerHeight/containerRect.height;
 		// console.log('containerScaleWidth = ', containerScaleWidth);
 		// console.log('containerScaleHeight = ', containerScaleHeight);
 
-		const imgScaleWidth = imgWidth/imgRect.width;
-		const imgScaleHeight = imgHeight/imgRect.height;
+		// const imgScaleWidth = imgWidth/imgRect.width;
+		// const imgScaleHeight = imgHeight/imgRect.height;
 		// console.log('imgScaleWidth = ', imgScaleWidth);
 		// console.log('imgScaleHeight = ', imgScaleHeight);
 
-		const cx = containerHeight * Math.sin(t);
-		const cy = containerHeight * Math.cos(t);
-		const ix = imgHeight * Math.sin(t);
-		const iy = imgHeight * Math.cos(t);
+		const cx = containerHeight * Math.sin(tS);
+		const cy = containerWidth * Math.sin(tS);
+		const ix = imgHeight * Math.sin(tS);
+		const iy = imgWidth * Math.sin(tS);
 
 		console.log('containerWidth = ', containerWidth, containerHeight);
 		console.log('cx = ', cx, cy);
-		console.log('imgWidth = ', imgWidth, imgHeight);
+		console.log('imgWidth ... = ', imgWidth, imgHeight);
 		console.log('ix = ', ix, iy);
 
-		const p1X = cx;
-		const p1Y = 0;
-		const p2X = imgRect.left - containerRect.left + ix;
-		const p2Y = imgRect.top - containerRect.top + 0;
+		const p1X = rotation >= 0 ? cx: 0;
+		const p1Y = rotation < 0 ? cy: 0;
+		const p2X = imgRect.left - containerRect.left + (rotation >= 0 ? ix: 0);
+		const p2Y = imgRect.top - containerRect.top + (rotation < 0 ? iy: 0);
 
 		console.log('p1X = ', p1X, p1Y);
 		console.log('p2X = ', p2X, p2Y);
